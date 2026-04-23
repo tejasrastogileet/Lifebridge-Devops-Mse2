@@ -30,6 +30,11 @@ setUpAndStartServer = () => {
     
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended:true}));
+
+    app.get('/', (req, res) => {
+        return res.status(200).json({ status: 'ok' });
+    });
+
     app.use('/api',v1Routes)
 
     app.listen(PORT , async()=> {
