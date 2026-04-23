@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -64,8 +64,7 @@ const DoctorDashboard = () => {
   const findAvailable = async () => {
     try {
       const res = await api.get(
-        `/doctor/availableOrgans?organName=${organName}&bloodGroup=${bloodGroup}`,
-        authHeader
+        `/doctor/availableOrgans?organName=${organName}&bloodGroup=${bloodGroup}`
       );
       setAvailable(res.data.data);
     } catch (err) {
@@ -77,8 +76,7 @@ const DoctorDashboard = () => {
     try {
       await api.post(
         "/doctor/requestOrgan",
-        { organName, bloodGroup },
-        authHeader
+        { organName, bloodGroup }
       );
       alert("Organ requested successfully");
       fetchDashboard();
@@ -93,8 +91,7 @@ const DoctorDashboard = () => {
     try {
       await api.post(
         "/doctor/accept-organ",
-        { organId, requestId },
-        authHeader
+        { organId, requestId }
       );
       fetchAllocations();
       fetchDashboard();
@@ -108,8 +105,7 @@ const DoctorDashboard = () => {
   try {
     await api.post(
       "/doctor/complete-allocation",
-      { allocationId },
-      authHeader
+      { allocationId }
     );
     fetchAllocations();
     alert("Allocation completed");
@@ -122,8 +118,7 @@ const failAllocation = async (allocationId) => {
   try {
     await api.post(
       "/doctor/fail-allocation",
-      { allocationId },
-      authHeader
+      { allocationId }
     );
     fetchAllocations();
     alert("Allocation failed");

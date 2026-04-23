@@ -73,15 +73,8 @@ const DonorDashboard = () => {
       navigate("/login");
       return;
     }
-    const loadData = async () => {
-      const res = await axios.get(
-        `${API_BASE}/donor/all`,
-        { headers: { "x-access-token": token } }
-      );
-      setMyRequests(res.data.data || []);
-    };
-    loadData();
-  }, [token, navigate]);
+    fetchMyRequests();
+  }, [token, navigate, fetchMyRequests]);
 
   // Auto-load all hospital needs when user first lands or switches to needs tab
   useEffect(() => {
@@ -97,23 +90,16 @@ const DonorDashboard = () => {
     setLoadingMessage("Accepting organ request...");
     
     try {
-      await axios.post(
-        `${API_BASE}/donor/accept-organ`,
-        { organId },
-        {
-          headers: { "x-access-token": token }
-        }
+      await api.post(
+        `/donor/accept-organ`,
+        { organId }
       );
 
       alert("Organ accepted successfully");
 
       // refresh UI
       await fetchNeeds();
-      const res = await axios.get(
-        `${API_BASE}/donor/all`,
-        { headers: { "x-access-token": token } }
-      );
-      setMyRequests(res.data.data || []);
+      await fetchMyRequests();
       setActiveTab("myRequests");
 
     } catch (err) {
@@ -127,14 +113,13 @@ const DonorDashboard = () => {
 
   const submitDonation = async (e) => {
     e.preventDefault();
-    const res = await axios.post(
-      `${API_BASE}/donor/donateOrgan`,
+    const res = await api.post(
+      `/donor/donateOrgan`,
       {
         organName: formData.organ,
         bloodGroup: formData.bloodgroup,
         requestId: selectedRequest?._id,
-      },
-      { headers: { "x-access-token": token } }
+      }
     );
     setOrganId(res.data.data._id);
     setStep(2);
@@ -146,8 +131,8 @@ const DonorDashboard = () => {
     setLoadingMessage("Processing your donation consent...");
     
     try {
-      await axios.post(
-        `${API_BASE}/donor/confirmDonation`,
+      await api.post(
+        `/donor/confirmDonation`,
         { organId, consentType },
         { headers: { "x-access-token": token } }
       );
@@ -169,10 +154,9 @@ const DonorDashboard = () => {
     setLoadingMessage("Confirming allocation...");
     
     try {
-      await axios.post(
-        `${API_BASE}/donor/confirm-allocation/${id}`,
-        {},
-        { headers: { "x-access-token": token } }
+      await api.post(
+        `/donor/confirm-allocation/${id}`,
+        {}
       );
       await fetchMyRequests();
     } catch (error) {
@@ -189,10 +173,9 @@ const DonorDashboard = () => {
     setLoadingMessage("Rejecting allocation...");
     
     try {
-      await axios.post(
-        `${API_BASE}/donor/reject-allocation/${id}`,
-        {},
-        { headers: { "x-access-token": token } }
+      await api.post(
+        `/donor/reject-allocation/${id}`,
+        {}
       );
       await fetchMyRequests();
     } catch (error) {
