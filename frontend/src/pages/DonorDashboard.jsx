@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import Lottie from "lottie-react";
 import impact from "../assets/impact.json";

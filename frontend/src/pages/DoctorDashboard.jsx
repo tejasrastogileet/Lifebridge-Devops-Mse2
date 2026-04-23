@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import LifeBridgeLogo from "../components/LifeBridgeLogo";
