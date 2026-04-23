@@ -4,9 +4,11 @@ const { PORT } = require('./config/serverConfig');
 const v1Routes = require('./routes/index');
 const dbConnect = require('./config/db');
 const cors = require("cors");
+const validateEnv = require('./config/validateEnv');
 
 setUpAndStartServer = () => {
 
+    validateEnv();
     dbConnect();
     const app = express();
     
@@ -17,9 +19,11 @@ setUpAndStartServer = () => {
         process.env.FRONTEND_URL || "http://localhost:3000"
     ];
     
+    const filteredOrigins = allowedOrigins.filter(Boolean);
+    
     app.use(cors({
         origin: function(origin, callback) {
-            if (!origin || allowedOrigins.includes(origin)) {
+            if (!origin || filteredOrigins.includes(origin)) {
                 callback(null, true);
             } else {
                 callback(new Error("CORS not allowed"));

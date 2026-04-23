@@ -5,8 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Lottie from "lottie-react";
 import impact from "../assets/impact.json";
 import LifeBridgeLogo from "../components/LifeBridgeLogo";
-
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000/api/v1";
+import api from "../api/axiosConfig";
 
 const DonorDashboard = () => {
   const navigate = useNavigate();
@@ -45,31 +44,27 @@ const DonorDashboard = () => {
       if (organName) params.organName = organName;
       if (bloodGroup) params.bloodGroup = bloodGroup;
       
-      const res = await axios.get(
-        `${API_BASE}/donor/waitingOrgans`,
-        {
-          params,
-          headers: { "x-access-token": token },
-        }
+      const res = await api.get(
+        `/donor/waitingOrgans`,
+        { params }
       );
       setAvailable(res.data.data || []);
     } catch (err) {
       console.error(err);
       setAvailable([]);
     }
-  }, [organName, bloodGroup, token]);
+  }, [organName, bloodGroup]);
 
   const fetchMyRequests = useCallback(async () => {
     try {
-      const res = await axios.get(
-        `${API_BASE}/donor/all`,
-        { headers: { "x-access-token": token } }
+      const res = await api.get(
+        `/donor/all`
       );
       setMyRequests(res.data.data || []);
     } catch (err) {
       console.error(err);
     }
-  }, [token]);
+  }, []);
 
   /* ================= EFFECT ================= */
 
