@@ -39,6 +39,10 @@ setUpAndStartServer = () => {
         return res.status(200).json({ status: 'ok' });
     });
 
+    app.get('/health', (req, res) => {
+        return res.status(200).json({ status: 'ok' });
+    });
+
     app.use('/api',v1Routes)
 
     app.listen(PORT , async()=> {
