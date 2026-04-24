@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { PORT } = require('./config/serverConfig');
 const v1Routes = require('./routes/index');
+const userRoutes = require('./routes/v1/userRoutes');
 const dbConnect = require('./config/db');
 const cors = require("cors");
 const validateEnv = require('./config/validateEnv');
@@ -38,6 +39,7 @@ setUpAndStartServer = () => {
         return res.status(200).json({ status: 'ok' });
     });
 
+    app.use('/api/auth', userRoutes);
     app.use('/api',v1Routes)
 
     app.listen(PORT , async()=> {

@@ -26,15 +26,28 @@ export default function Signup() {
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log("API URL:", process.env.REACT_APP_API_URL);
 
     try {
-      const res = await api.post("/user/signup", formData);
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        address: formData.address,
+        role: formData.role,
+        hospitalName: formData.hospitalName,
+        city: formData.city,
+      };
+
+      const res = await api.post("/api/auth/signup", payload);
       localStorage.setItem("token", res.data.data);
 
       formData.role === "DONOR"
         ? navigate("/donor-dashboard")
         : navigate("/doctor-dashboard");
     } catch (err) {
+      console.error("Signup/Login error:", err);
       alert(err.response?.data?.message || "Signup failed");
     } finally {
       setLoading(false);

@@ -15,9 +15,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log("API URL:", process.env.REACT_APP_API_URL);
 
     try {
-      const res = await api.post("/user/login", {
+      const res = await api.post("/api/auth/login", {
         email,
         password,
         role,
@@ -29,6 +30,7 @@ const Login = () => {
         ? navigate("/donor-dashboard")
         : navigate("/doctor-dashboard");
     } catch (err) {
+      console.error("Signup/Login error:", err);
       alert(err.response?.data?.message || "Login failed");
     } finally {
       setLoading(false);
