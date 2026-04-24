@@ -9,7 +9,11 @@ const validateEnv = require('./config/validateEnv');
 setUpAndStartServer = () => {
 
     validateEnv();
-    dbConnect();
+    if (process.env.SKIP_DB === 'true') {
+        console.log('Skipping database connection (SKIP_DB=true)');
+    } else {
+        dbConnect();
+    }
     const app = express();
     
     // CORS configuration for both local and production
