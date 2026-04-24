@@ -1,145 +1,101 @@
-# 🌉 LifeBridge - DevOps Enabled Full Stack Platform
+# 🌉 LifeBridge - DevOps Integrated Full Stack Platform
 
-LifeBridge is a **full-stack organ donation and transplant coordination platform** designed to connect donors, recipients, and hospitals efficiently.
+LifeBridge is a full-stack organ donation and transplant coordination platform.
 
-This project demonstrates a **complete DevOps pipeline** from development → testing → containerization → CI/CD → production deployment.
+This project demonstrates a **complete DevOps lifecycle** including:
+- Git branching strategy
+- CI/CD pipeline
+- Code quality analysis
+- Docker containerization
+- Cloud deployment
 
 ---
 
 ## 🧠 Project Overview
 
 LifeBridge allows:
-- Users to register as donors
-- Hospitals to post organ/blood requests
-- Users to search and respond to requests
-- Secure authentication & role-based access
+- User authentication (signup/login)
+- Donor registration
+- Hospital request management
+- Searching organ/blood requests
 
 ---
 
 ## 🏗️ Tech Stack
 
-### 🔹 Frontend
-- React (Create React App)
+### Frontend
+- React (CRA)
 - Axios
-- Environment-based API config
+- Environment Variables
 
-### 🔹 Backend
-- Node.js
-- Express.js
-- MongoDB (Atlas)
+### Backend
+- Node.js + Express
+- MongoDB Atlas
 - JWT Authentication
 
 ---
 
-## ⚙️ DevOps Implementation (Core Highlight 🔥)
+# ⚙️ DevOps Implementation (MAIN FOCUS 🔥)
 
-This project is built with **real-world DevOps practices**:
-
----
-
-### 🔄 1. CI/CD Pipeline (GitHub Actions)
-
-Automated pipeline using:
+## 🔀 Git Workflow
 
 
-.github/workflows/ci.yml
+dev → PR → CI → main → deploy
 
 
-#### CI Steps:
-- Install dependencies
-- Run backend checks
-- Build frontend
-- Run test scripts
-- SonarCloud code analysis
-- Docker build validation
-
-#### CD Flow:
-- Code pushed → CI runs automatically
-- On success → ready for deployment
+- `dev` branch for development
+- `main` branch for production
+- Pull Request used before merging
 
 ---
 
-### 🧪 2. Code Quality (SonarCloud)
+## 🔄 CI/CD Pipeline (GitHub Actions)
 
-- Static code analysis
-- Code coverage checks
-- Bug & vulnerability detection
-- Quality gate validation
+Pipeline runs automatically on push/PR:
+
+### Steps:
+1. Install dependencies
+2. Backend checks
+3. Frontend build
+4. SonarCloud analysis
+5. Docker build validation
 
 ---
 
-### 🐳 3. Docker Containerization
+## 🧪 SonarCloud (Code Quality)
 
-Both services are containerized:
+- Detects bugs & vulnerabilities
+- Maintains clean code
+- Quality gate enforced before deployment
 
-#### Backend:
+---
+
+## 🐳 Docker
+
+- Backend and frontend containerized
+- Ensures consistent environment
+
 ```bash
-docker build -t lifebridge-backend ./backend
-Frontend:
-docker build -t lifebridge-frontend ./frontend
-Docker Compose:
 docker compose up --build
-🌐 4. Deployment Architecture
+🌐 Deployment
 Service	Platform
 Frontend	Vercel
 Backend	Render
 Database	MongoDB Atlas
-🔐 5. Environment Configuration
+🔐 Environment Variables
 Backend (.env)
 PORT=5000
 JWT_SECRET=your_secret
-MONGODB_URI=your_mongodb_uri
-FRONTEND_URL=https://your-frontend-url
+MONGODB_URI=your_uri
+FRONTEND_URL=https://lifebridge-devops-mse2.vercel.app
 Frontend (.env.production)
-REACT_APP_API_URL=https://your-backend-url
-🔥 6. Key DevOps Challenges Solved
-✅ CORS configuration for production frontend
-✅ Environment variable handling (build-time vs runtime)
-✅ API route alignment (frontend ↔ backend)
-✅ Docker CI failures (DB dependency handling)
-✅ Git workflow (dev → PR → main merge)
-✅ Production debugging via logs
-🔀 Git Workflow
-dev → development branch
-main → production branch
-Pull Request → merge into main
-CI runs on PR + push
-🚀 Live Deployment
-🌐 Frontend: https://lifebridge-devops-mse2.vercel.app
-⚙️ Backend: https://lifebridge-devops-mse2.onrender.com
-💻 Local Development
-Backend
-cd backend
-npm install
-npm start
-Frontend
-cd frontend
-npm install
-npm start
+REACT_APP_API_URL=https://lifebridge-devops-mse2.onrender.com
+🚀 Live Project
+
+Frontend: https://lifebridge-devops-mse2.vercel.app
+
+Backend: https://lifebridge-devops-mse2.onrender.com
+
 🧪 API Endpoints
 POST /api/auth/signup
 POST /api/auth/login
-📦 Project Structure
-LifeBridge/
-│
-├── frontend/        # React app
-├── backend/         # Node.js API
-├── docker-compose.yml
-├── .github/workflows/
-│   └── ci.yml
-🎯 What This Project Demonstrates
-Full Stack Development
-Real CI/CD Pipeline
-Docker-based architecture
-Cloud deployment (Vercel + Render)
-Debugging production issues
-DevOps integration with real app
-🧠 Key Learnings
-CI/CD ≠ working production (configuration matters)
-CORS is critical in frontend-backend integration
-Environment variables must be handled carefully
-API route consistency is essential
-Docker requires dependency awareness (DB handling)
-👨‍💻 Author
-
-Tejas Rastogi
