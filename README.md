@@ -1,101 +1,195 @@
-# 🌉 LifeBridge - DevOps Integrated Full Stack Platform
+# 🫀 LifeBridge
+### Full-Stack Organ Donation & Transplant Coordination Platform  
+**CI/CD • Docker • SonarCloud • Vercel • Render**
 
-LifeBridge is a full-stack organ donation and transplant coordination platform.
-
-This project demonstrates a **complete DevOps lifecycle** including:
-- Git branching strategy
-- CI/CD pipeline
-- Code quality analysis
-- Docker containerization
-- Cloud deployment
+> Bridging the gap between donors and patients through technology ❤️
 
 ---
 
-## 🧠 Project Overview
-
-LifeBridge allows:
-- User authentication (signup/login)
-- Donor registration
-- Hospital request management
-- Searching organ/blood requests
+## 🚀 Live Demo
+- 🌐 Frontend: https://lifebridge-devops-mse2.vercel.app  
+- 🔧 Backend API: https://lifebridge-devops-mse2.onrender.com  
 
 ---
 
-## 🏗️ Tech Stack
+## 🎯 Problem Statement
 
-### Frontend
-- React (CRA)
-- Axios
-- Environment Variables
+Organ donation systems face critical issues:
 
-### Backend
-- Node.js + Express
-- MongoDB Atlas
-- JWT Authentication
+❌ Lack of real-time donor-patient coordination  
+❌ Manual and inefficient request handling  
+❌ No centralized platform for tracking requests  
+❌ Delays in emergency organ matching  
 
 ---
 
-# ⚙️ DevOps Implementation (MAIN FOCUS 🔥)
+## 💡 Solution
 
-## 🔀 Git Workflow
+LifeBridge provides:
 
-
-dev → PR → CI → main → deploy
-
-
-- `dev` branch for development
-- `main` branch for production
-- Pull Request used before merging
+✅ Donor & patient registration system  
+✅ Real-time organ request handling  
+✅ Secure authentication (JWT)  
+✅ Centralized dashboard for tracking  
+✅ Scalable full-stack architecture  
 
 ---
 
-## 🔄 CI/CD Pipeline (GitHub Actions)
+## ✨ Features
 
-Pipeline runs automatically on push/PR:
+### 👤 Authentication System
+- Secure Signup/Login
+- JWT-based authentication
+- Role-based users (Donor / Hospital)
 
-### Steps:
-1. Install dependencies
-2. Backend checks
-3. Frontend build
-4. SonarCloud analysis
-5. Docker build validation
+### 🩸 Donor Dashboard
+- View available requests
+- Search by organ type
+- Track donation status
+
+### 🏥 Hospital System
+- Create organ requests
+- Manage patient needs
+- Track donors
+
+### 🔍 Search & Filter
+- Organ-based filtering
+- Blood group filtering
 
 ---
 
-## 🧪 SonarCloud (Code Quality)
+## 🏗️ Architecture
 
-- Detects bugs & vulnerabilities
-- Maintains clean code
-- Quality gate enforced before deployment
+
+User (Browser)
+│
+▼
+React (Frontend - Vercel)
+│
+▼
+Node.js + Express (Backend - Render)
+│
+▼
+MongoDB (Database)
+
 
 ---
 
-## 🐳 Docker
+## ⚙️ Tech Stack
 
-- Backend and frontend containerized
-- Ensures consistent environment
+| Layer        | Technology |
+|-------------|------------|
+| Frontend     | React (CRA) |
+| Backend      | Node.js + Express |
+| Database     | MongoDB |
+| Auth         | JWT |
+| CI/CD        | GitHub Actions |
+| Code Quality | SonarCloud |
+| Deployment   | Vercel + Render |
+| Container    | Docker |
+
+---
+
+## 🔄 DevOps & CI/CD Pipeline (🔥 IMP)
+
+### Pipeline Flow:
+
+
+Dev Branch → GitHub Actions → SonarCloud → Docker → PR → Main → Deployment
+
+
+### 🔹 What Happens Automatically:
+
+- ✅ Backend build & validation  
+- ✅ Frontend build  
+- ✅ SonarCloud code quality check  
+- ✅ Docker container validation  
+
+👉 Only after all checks pass → code is merged into `main`
+
+---
+
+## 🔍 Why Dev Branch?
+
+- `main` = Production  
+- `dev` = Development  
+
+👉 Ensures:
+- Safe development  
+- No direct production break  
+
+---
+
+## 🧪 SonarCloud Integration
+
+- Detects bugs 🐞  
+- Ensures clean code 🧹  
+- Checks security issues 🔐  
+
+---
+
+## 🐳 Docker Support
 
 ```bash
 docker compose up --build
-🌐 Deployment
+Runs frontend + backend in containers
+Ensures same environment everywhere
+🌍 Deployment
 Service	Platform
 Frontend	Vercel
 Backend	Render
-Database	MongoDB Atlas
-🔐 Environment Variables
+⚡ Environment Variables
 Backend (.env)
 PORT=5000
 JWT_SECRET=your_secret
-MONGODB_URI=your_uri
+MONGODB_URI=your_mongodb_uri
 FRONTEND_URL=https://lifebridge-devops-mse2.vercel.app
 Frontend (.env.production)
 REACT_APP_API_URL=https://lifebridge-devops-mse2.onrender.com
-🚀 Live Project
+🧪 Debugging Tasks (IMPORTANT - 10 MARKS 💯)
+🔴 Issue 1: CORS Error
+Problem: Frontend blocked by backend
+Fix: Added Vercel domain in backend CORS
+🔴 Issue 2: Wrong API Endpoint
+Problem: /api/auth vs /api/v1/user mismatch
+Fix: Added alias routes for compatibility
+🔴 Issue 3: Environment Variables
+Problem: API URL hardcoded
+Fix: Used process.env.REACT_APP_API_URL
+🔴 Issue 4: Deployment Failures
+Fixed Docker build issues
+Fixed CI pipeline errors
+📁 Project Structure
+LifeBridge/
+│
+├── frontend/        # React App
+├── backend/         # Node.js API
+├── .github/workflows/
+├── docker-compose.yml
+├── Dockerfile
+└── README.md
+🚀 Getting Started
+Backend
+cd backend
+npm install
+npm start
+Frontend
+cd frontend
+npm install
+npm start
+👥 Team RCB 🔥
+Name	Role
+Vidhit Hatwaliya	Frontend Developer
+Visu Chaudhary	Backend Developer
+Tejas Rastogi	DevOps Lead (CI/CD, Docker, Deployment)
+Vishal Pal	Testing & Integration
+🤝 Team Contribution
+Followed Git workflow (dev → PR → main)
+Implemented full CI/CD pipeline
+Debugged real production issues
+Deployed scalable application
+🏆 Final Note
 
-Frontend: https://lifebridge-devops-mse2.vercel.app
+This is not just a project — it is a production-ready system with real DevOps practices including CI/CD, Docker, code quality checks, and cloud deployment.
 
-Backend: https://lifebridge-devops-mse2.onrender.com
-
-🧪 API Endpoints
-POST /api/auth/signup
-POST /api/auth/login
+Made with ❤️ by Team RCB
