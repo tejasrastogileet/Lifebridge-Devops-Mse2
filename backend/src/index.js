@@ -16,23 +16,14 @@ setUpAndStartServer = () => {
     }
     const app = express();
     
-    // CORS configuration for both local and production
+    // CORS configuration for local and deployed frontend
     const allowedOrigins = [
         "http://localhost:3000",
-        "http://localhost:3001",
-        process.env.FRONTEND_URL || "http://localhost:3000"
+        "https://lifebridge-devops-mse2.vercel.app"
     ];
-    
-    const filteredOrigins = allowedOrigins.filter(Boolean);
-    
+
     app.use(cors({
-        origin: function(origin, callback) {
-            if (!origin || filteredOrigins.includes(origin)) {
-                callback(null, true);
-            } else {
-                callback(new Error("CORS not allowed"));
-            }
-        },
+        origin: allowedOrigins,
         credentials: true
     }));
     
