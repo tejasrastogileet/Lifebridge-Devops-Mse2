@@ -4,10 +4,16 @@ const { PORT } = require('./config/serverConfig');
 const v1Routes = require('./routes/index');
 const dbConnect = require('./config/db');
 const cors = require("cors");
+const validateEnv = require('./config/validateEnv');
 
 setUpAndStartServer = () => {
 
-    dbConnect();
+    validateEnv();
+    if (process.env.SKIP_DB === 'true') {
+        console.log('Skipping database connection (SKIP_DB=true)');
+    } else {
+        dbConnect();
+    }
     const app = express();
     
     // CORS configuration for both local and production
@@ -17,9 +23,11 @@ setUpAndStartServer = () => {
         process.env.FRONTEND_URL || "http://localhost:3000"
     ];
     
+    const filteredOrigins = allowedOrigins.filter(Boolean);
+    
     app.use(cors({
         origin: function(origin, callback) {
-            if (!origin || allowedOrigins.includes(origin)) {
+            if (!origin || filteredOrigins.includes(origin)) {
                 callback(null, true);
             } else {
                 callback(new Error("CORS not allowed"));
@@ -32,6 +40,10 @@ setUpAndStartServer = () => {
     app.use(bodyParser.urlencoded({extended:true}));
 
     app.get('/', (req, res) => {
+        return res.status(200).json({ status: 'ok' });
+    });
+
+    app.get('/health', (req, res) => {
         return res.status(200).json({ status: 'ok' });
     });
 

@@ -1,16 +1,8 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import axios from "axios";
+import React, { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import LifeBridgeLogo from "../components/LifeBridgeLogo";
-
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000/api/v1";
-
-/* ================= AXIOS INSTANCE ================= */
-
-const api = axios.create({
-  baseURL: API_BASE,
-});
+import api from "../api/axiosConfig";
 
 /* ================= COMPONENT ================= */
 
@@ -18,56 +10,45 @@ const DoctorDashboard = () => {
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState("dashboard");
-
   const [dashboard, setDashboard] = useState({});
   const [available, setAvailable] = useState([]);
   const [allocations, setAllocations] = useState([]);
-
   const [organName, setOrganName] = useState("");
   const [bloodGroup, setBloodGroup] = useState("");
 
   const token = localStorage.getItem("token");
 
-  const authHeader = useMemo(
-    () => ({
-      headers: {
-        "x-access-token": token,
-      },
-    }),
-    [token]
-  );
-
   /* ================= LOAD ================= */
 
   const fetchDashboard = useCallback(async () => {
     try {
-      const res = await api.get("/doctor/dashboard", authHeader);
+      const res = await api.get("/doctor/dashboard");
       setDashboard(res.data.data);
     } catch (err) {
       console.log(err);
     }
-  }, [authHeader]);
+  }, []);
 
   const fetchAllocations = useCallback(async () => {
     try {
-      const res = await api.get(`/doctor/allocations?status=ALL_ACTIVE`, authHeader);
+      const res = await api.get(`/doctor/allocations?status=ALL_ACTIVE`);
       setAllocations(res.data.data);
       console.log(res)
     } catch (err) {
       console.log(err);
     }
-  }, [authHeader]);
+  }, []);
 
   const fetchAllAvailableOrgans = useCallback(async () => {
     try {
-      const res = await api.get(`/doctor/availableOrgans`, authHeader);
+      const res = await api.get(`/doctor/availableOrgans`);
       setAvailable(res.data.data || []);
       console.log("Fetched available organs:", res.data.data);
     } catch (err) {
       console.log(err);
       setAvailable([]);
     }
-  }, [authHeader]);
+  }, []);
 
   useEffect(() => {
     if (!token) {
@@ -77,13 +58,12 @@ const DoctorDashboard = () => {
     fetchDashboard();
     fetchAllocations();
     fetchAllAvailableOrgans();
-  }, [token, navigate, fetchDashboard, fetchAllocations, fetchAllAvailableOrgans]);
+  }, [token, navigate, fetchDashboard, fetchAllocations, fetchAllAvailableOrgans]);;
 
   const findAvailable = async () => {
     try {
       const res = await api.get(
-        `/doctor/availableOrgans?organName=${organName}&bloodGroup=${bloodGroup}`,
-        authHeader
+        `/doctor/availableOrgans?organName=${organName}&bloodGroup=${bloodGroup}`
       );
       setAvailable(res.data.data);
     } catch (err) {
@@ -95,8 +75,7 @@ const DoctorDashboard = () => {
     try {
       await api.post(
         "/doctor/requestOrgan",
-        { organName, bloodGroup },
-        authHeader
+        { organName, bloodGroup }
       );
       alert("Organ requested successfully");
       fetchDashboard();
@@ -111,8 +90,7 @@ const DoctorDashboard = () => {
     try {
       await api.post(
         "/doctor/accept-organ",
-        { organId, requestId },
-        authHeader
+        { organId, requestId }
       );
       fetchAllocations();
       fetchDashboard();
@@ -126,8 +104,7 @@ const DoctorDashboard = () => {
   try {
     await api.post(
       "/doctor/complete-allocation",
-      { allocationId },
-      authHeader
+      { allocationId }
     );
     fetchAllocations();
     alert("Allocation completed");
@@ -140,8 +117,7 @@ const failAllocation = async (allocationId) => {
   try {
     await api.post(
       "/doctor/fail-allocation",
-      { allocationId },
-      authHeader
+      { allocationId }
     );
     fetchAllocations();
     alert("Allocation failed");

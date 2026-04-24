@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axiosConfig";
 import signupImage from "../assets/Signup.png"
-const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "http://localhost:5000/api/v1",
-});
 
 export default function Signup() {
   const navigate = useNavigate();

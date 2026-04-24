@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import Lottie from "lottie-react";
 import impact from "../assets/impact.json";
 import LifeBridgeLogo from "../components/LifeBridgeLogo";
-
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000/api/v1";
+import api from "../api/axiosConfig";
 
 const DonorDashboard = () => {
   const navigate = useNavigate();
@@ -45,31 +43,27 @@ const DonorDashboard = () => {
       if (organName) params.organName = organName;
       if (bloodGroup) params.bloodGroup = bloodGroup;
       
-      const res = await axios.get(
-        `${API_BASE}/donor/waitingOrgans`,
-        {
-          params,
-          headers: { "x-access-token": token },
-        }
+      const res = await api.get(
+        `/donor/waitingOrgans`,
+        { params }
       );
       setAvailable(res.data.data || []);
     } catch (err) {
       console.error(err);
       setAvailable([]);
     }
-  }, [organName, bloodGroup, token]);
+  }, [organName, bloodGroup]);
 
   const fetchMyRequests = useCallback(async () => {
     try {
-      const res = await axios.get(
-        `${API_BASE}/donor/all`,
-        { headers: { "x-access-token": token } }
+      const res = await api.get(
+        `/donor/all`
       );
       setMyRequests(res.data.data || []);
     } catch (err) {
       console.error(err);
     }
-  }, [token]);
+  }, []);
 
   /* ================= EFFECT ================= */
 
@@ -78,15 +72,8 @@ const DonorDashboard = () => {
       navigate("/login");
       return;
     }
-    const loadData = async () => {
-      const res = await axios.get(
-        `${API_BASE}/donor/all`,
-        { headers: { "x-access-token": token } }
-      );
-      setMyRequests(res.data.data || []);
-    };
-    loadData();
-  }, [token, navigate]);
+    fetchMyRequests();
+  }, [token, navigate, fetchMyRequests]);
 
   // Auto-load all hospital needs when user first lands or switches to needs tab
   useEffect(() => {
@@ -102,23 +89,16 @@ const DonorDashboard = () => {
     setLoadingMessage("Accepting organ request...");
     
     try {
-      await axios.post(
-        `${API_BASE}/donor/accept-organ`,
-        { organId },
-        {
-          headers: { "x-access-token": token }
-        }
+      await api.post(
+        `/donor/accept-organ`,
+        { organId }
       );
 
       alert("Organ accepted successfully");
 
       // refresh UI
       await fetchNeeds();
-      const res = await axios.get(
-        `${API_BASE}/donor/all`,
-        { headers: { "x-access-token": token } }
-      );
-      setMyRequests(res.data.data || []);
+      await fetchMyRequests();
       setActiveTab("myRequests");
 
     } catch (err) {
@@ -132,14 +112,13 @@ const DonorDashboard = () => {
 
   const submitDonation = async (e) => {
     e.preventDefault();
-    const res = await axios.post(
-      `${API_BASE}/donor/donateOrgan`,
+    const res = await api.post(
+      `/donor/donateOrgan`,
       {
         organName: formData.organ,
         bloodGroup: formData.bloodgroup,
         requestId: selectedRequest?._id,
-      },
-      { headers: { "x-access-token": token } }
+      }
     );
     setOrganId(res.data.data._id);
     setStep(2);
@@ -151,8 +130,8 @@ const DonorDashboard = () => {
     setLoadingMessage("Processing your donation consent...");
     
     try {
-      await axios.post(
-        `${API_BASE}/donor/confirmDonation`,
+      await api.post(
+        `/donor/confirmDonation`,
         { organId, consentType },
         { headers: { "x-access-token": token } }
       );
@@ -174,10 +153,9 @@ const DonorDashboard = () => {
     setLoadingMessage("Confirming allocation...");
     
     try {
-      await axios.post(
-        `${API_BASE}/donor/confirm-allocation/${id}`,
-        {},
-        { headers: { "x-access-token": token } }
+      await api.post(
+        `/donor/confirm-allocation/${id}`,
+        {}
       );
       await fetchMyRequests();
     } catch (error) {
@@ -194,10 +172,9 @@ const DonorDashboard = () => {
     setLoadingMessage("Rejecting allocation...");
     
     try {
-      await axios.post(
-        `${API_BASE}/donor/reject-allocation/${id}`,
-        {},
-        { headers: { "x-access-token": token } }
+      await api.post(
+        `/donor/reject-allocation/${id}`,
+        {}
       );
       await fetchMyRequests();
     } catch (error) {

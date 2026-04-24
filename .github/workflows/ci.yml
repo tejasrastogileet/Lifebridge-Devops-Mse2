@@ -95,7 +95,7 @@ jobs:
         run: docker compose build backend frontend
 
       - name: Run backend container
-        run: docker run -d --name lifebridge-backend-ci -p 5000:5000 lifebridge-backend:ci
+        run: docker run -d --name lifebridge-backend-ci -p 5000:5000 -e MONGODB_URI=mongodb://localhost:27017/lifebridge_ci -e JWT_SECRET=dummysecret12345678901234567890 -e PORT=5000 -e SKIP_DB=true lifebridge-backend:ci
 
       - name: Verify container is running
         run: docker ps --filter "name=lifebridge-backend-ci" --filter "status=running"
@@ -103,7 +103,7 @@ jobs:
       - name: Test backend container endpoint (optional)
         run: |
           for i in {1..15}; do
-            if curl -fsS http://localhost:5000 >/dev/null; then
+            if curl -fsS http://localhost:5000/health >/dev/null; then
               echo "Backend container responded successfully."
               exit 0
             fi
