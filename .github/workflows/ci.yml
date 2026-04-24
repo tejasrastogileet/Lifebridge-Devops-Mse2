@@ -95,7 +95,7 @@ jobs:
         run: docker compose build backend frontend
 
       - name: Run backend container
-        run: docker run -d --name lifebridge-backend-ci -p 5000:5000 lifebridge-backend:ci
+        run: docker run -d --name lifebridge-backend-ci -p 5000:5000 -e MONGODB_URI=dummy -e JWT_SECRET=dummysecret12345678901234567890 -e PORT=5000 lifebridge-backend:ci
 
       - name: Verify container is running
         run: docker ps --filter "name=lifebridge-backend-ci" --filter "status=running"
